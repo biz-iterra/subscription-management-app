@@ -15,7 +15,7 @@ export default function SettingsPage() {
   return (
     <>
       <Header title="設定" />
-      <div className="p-6 space-y-6 max-w-2xl">
+      <div className="p-4 md:p-6 space-y-6 max-w-2xl w-full">
         <ReminderSection />
         <PaymentMethodsSection />
         <CategoriesSection />

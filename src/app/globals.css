@@ -33,15 +33,16 @@
   /* フォームインプット */
   .input-dark {
     background: #FFFFFF;
-    border: 1px solid #D1D5DB;
+    border: 1px solid #E5E7EB;
     color: #111827;
     transition: border-color 0.15s, box-shadow 0.15s;
   }
-  .input-dark::placeholder { color: #9CA3AF; }
+  .input-dark::placeholder { color: #B0B7C3; }
+  .input-dark:hover:not(:focus):not(:disabled) { border-color: #9CA3AF; }
   .input-dark:focus {
     outline: none;
     border-color: #6366F1;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
   }
   .input-dark option { background: #FFFFFF; color: #111827; }
 
@@ -65,4 +66,12 @@
   .text-glass-muted  { color: #6B7280; }   /* ~5:1 on white ✓  */
   .text-glass-subtle { color: #9CA3AF; }   /* 装飾・大文字ラベルのみ */
   .border-glass      { border-color: #E5E7EB; }
+
+  /* iOS セーフエリア対応 */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .pb-nav-safe {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
 }

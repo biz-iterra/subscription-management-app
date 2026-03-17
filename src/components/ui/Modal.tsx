@@ -27,13 +27,13 @@ export function Modal({ open, onClose, title, children, className, size = "md" }
       <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
       <div
         className={cn(
-          "relative bg-white border border-zinc-200 rounded-2xl w-full shadow-modal animate-slide-up",
+          "relative bg-white border border-zinc-200 rounded-2xl w-full shadow-modal animate-slide-up flex flex-col max-h-[calc(100dvh-2rem)]",
           { "max-w-sm": size === "sm", "max-w-lg": size === "md", "max-w-2xl": size === "lg" },
           className
         )}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-zinc-200">
+          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-zinc-200 flex-shrink-0">
             <h2 className="text-sm font-bold text-zinc-900">{title}</h2>
             <button
               onClick={onClose}
@@ -44,7 +44,7 @@ export function Modal({ open, onClose, title, children, className, size = "md" }
             </button>
           </div>
         )}
-        <div className="p-6">{children}</div>
+        <div className="p-6 overflow-y-auto">{children}</div>
       </div>
     </div>
   );

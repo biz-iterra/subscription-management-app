@@ -60,7 +60,7 @@ export default function DashboardPage() {
   return (
     <>
       <Header title="サブスクリプション一覧" />
-      <div className="p-6 space-y-5">
+      <div className="p-4 md:p-6 space-y-5">
 
         {/* サマリー */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

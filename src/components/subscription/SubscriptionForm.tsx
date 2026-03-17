@@ -7,7 +7,7 @@ import { BILLING_CYCLE_LABELS, CATEGORY_COLORS, STATUS_LABELS } from "@/lib/cons
 import { useCategories, usePaymentMethods } from "@/hooks/useSettings";
 import type { Subscription, SubscriptionFormValues } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,8 +24,8 @@ const schema = z.object({
   status: z.enum(["active", "paused", "cancelled"]),
 });
 
-const selectClass = "input-dark w-full px-3.5 py-2.5 text-sm rounded-xl";
-const labelClass = "text-xs font-semibold text-zinc-500 uppercase tracking-widest";
+const selectClass = "input-dark w-full pl-3.5 pr-9 py-2.5 text-sm rounded-xl appearance-none";
+const labelClass = "text-sm font-medium text-zinc-700";
 
 interface SubscriptionFormProps {
   defaultValues?: Partial<Subscription>;
@@ -81,19 +81,22 @@ export function SubscriptionForm({ defaultValues, onSubmit, onCancel, submitLabe
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
             <label className={labelClass}>料金サイクル <span className="text-red-400">*</span></label>
-            <select className={selectClass} {...register("billing_cycle")}>
-              {Object.entries(BILLING_CYCLE_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-            </select>
+            <div className="relative">
+              <select className={selectClass} {...register("billing_cycle")}>
+                {Object.entries(BILLING_CYCLE_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+              </select>
+              <ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            </div>
           </div>
           <div className="flex flex-col gap-1.5">
             <label className={labelClass}>金額 <span className="text-red-400">*</span></label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 text-sm text-zinc-500 border-y border-l border-zinc-300 rounded-l-xl bg-zinc-50">¥</span>
+            <div className="flex rounded-xl overflow-hidden border border-zinc-200 focus-within:border-primary-500 focus-within:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all">
+              <span className="inline-flex items-center px-3 text-sm font-medium text-zinc-500 bg-zinc-50 border-r border-zinc-200 select-none">¥</span>
               <input type="number" min="0"
-                className="flex-1 px-3 py-2.5 text-sm rounded-r-xl border border-zinc-300 bg-white text-zinc-900 focus:outline-none focus:border-primary-500 focus:shadow-[0_0_0_3px_rgba(99,102,241,0.15)]"
+                className="flex-1 px-3 py-2.5 text-sm bg-white text-zinc-900 focus:outline-none"
                 {...register("amount")} />
             </div>
-            {errors.amount && <p className="text-xs text-red-400">{errors.amount.message}</p>}
+            {errors.amount && <p className="text-xs text-red-500 mt-0.5">{errors.amount.message}</p>}
           </div>
         </div>
 
@@ -104,36 +107,45 @@ export function SubscriptionForm({ defaultValues, onSubmit, onCancel, submitLabe
           <div className="flex flex-col gap-1.5">
             <label className={labelClass}>カテゴリ</label>
             <div className="flex gap-1.5">
-              <select className={selectClass + " flex-1"} {...register("category_id")}>
-                <option value="">未分類</option>
-                {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+              <div className="relative flex-1">
+                <select className={selectClass + " w-full"} {...register("category_id")}>
+                  <option value="">未分類</option>
+                  {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+                <ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+              </div>
               <button type="button" onClick={() => setAddCategoryOpen(true)}
-                className="flex-shrink-0 w-10 flex items-center justify-center rounded-xl border border-white/12 text-glass-muted hover:text-primary-300 hover:border-primary-500/50 transition-colors bg-white/5">
+                className="flex-shrink-0 w-10 flex items-center justify-center rounded-xl border border-zinc-200 text-zinc-400 hover:text-primary-500 hover:border-primary-300 hover:bg-primary-50 transition-colors bg-white">
                 <Plus size={15} />
               </button>
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
             <label className={labelClass}>支払い方法</label>
-            <select className={selectClass} {...register("payment_method_id")}>
-              <option value="">未設定</option>
-              {paymentMethods.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-            </select>
+            <div className="relative">
+              <select className={selectClass} {...register("payment_method_id")}>
+                <option value="">未設定</option>
+                {paymentMethods.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+              </select>
+              <ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label className={labelClass}>ステータス <span className="text-red-400">*</span></label>
-          <select className={selectClass} {...register("status")}>
-            {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-          </select>
+          <div className="relative">
+            <select className={selectClass} {...register("status")}>
+              {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </select>
+            <ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="memo" className={labelClass}>メモ</label>
           <textarea id="memo" rows={3}
-            className="input-dark w-full px-3.5 py-2.5 text-sm rounded-xl resize-none text-zinc-900"
+            className="input-dark w-full px-3.5 py-2.5 text-sm rounded-xl resize-none"
             placeholder="任意メモ" {...register("memo")} />
         </div>
 

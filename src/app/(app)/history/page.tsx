@@ -50,7 +50,7 @@ export default function HistoryPage() {
   return (
     <>
       <Header title="支払い履歴" />
-      <div className="p-6 space-y-5 max-w-3xl">
+      <div className="p-4 md:p-6 space-y-5 max-w-3xl w-full">
         {loading ? (
           <div className="flex justify-center py-16"><LoadingSpinner /></div>
         ) : (
@@ -72,10 +72,10 @@ export default function HistoryPage() {
               <CardHeader><CardTitle>月次支払い額（過去12ヶ月）</CardTitle></CardHeader>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={data} margin={{ top: 4, right: 4, left: 8, bottom: 0 }}>
+                  <BarChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
                     <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} tickFormatter={(v) => `¥${(v / 1000).toFixed(0)}k`} />
+                    <YAxis width={52} tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} tickFormatter={(v) => `¥${(v / 1000).toFixed(0)}k`} />
                     <Tooltip formatter={(value: number) => [formatCurrency(value), "支払額"]} contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B7280" }} cursor={{ fill: "rgba(99,102,241,0.06)" }} />
                     <Bar dataKey="total" fill="#6366F1" radius={[4, 4, 0, 0]} />
                   </BarChart>

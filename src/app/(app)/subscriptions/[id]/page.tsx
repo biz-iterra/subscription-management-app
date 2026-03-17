@@ -53,7 +53,7 @@ export default function SubscriptionDetailPage({ params }: { params: Promise<{ i
   return (
     <>
       <Header title="詳細" />
-      <div className="p-6 space-y-5 max-w-3xl">
+      <div className="p-4 md:p-6 space-y-5 max-w-3xl w-full">
 
         <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 transition-colors">
           <ArrowLeft size={15} aria-hidden="true" />一覧へ戻る
@@ -61,13 +61,13 @@ export default function SubscriptionDetailPage({ params }: { params: Promise<{ i
 
         {/* メインカード */}
         <Card>
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 {subscription.categories && <Badge color={subscription.categories.color}>{subscription.categories.name}</Badge>}
                 <StatusBadge status={subscription.status} />
               </div>
-              <h2 className="text-xl font-bold text-zinc-900">{subscription.service_name}</h2>
+              <h2 className="text-xl font-bold text-zinc-900 break-words">{subscription.service_name}</h2>
               {subscription.memo && <p className="text-sm text-zinc-500 mt-2 whitespace-pre-line leading-relaxed">{subscription.memo}</p>}
             </div>
             <div className="flex gap-2 flex-shrink-0">
@@ -128,7 +128,8 @@ export default function SubscriptionDetailPage({ params }: { params: Promise<{ i
           ) : logs.length === 0 ? (
             <div className="text-center py-8 text-zinc-400 text-sm">支払いログがありません</div>
           ) : (
-            <table className="w-full">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[400px]">
               <thead>
                 <tr className="border-b border-zinc-100 bg-zinc-50/60">
                   <th className="text-left px-5 py-3"><SortableHeader label="支払日" sortKey="payment_date" currentKey={logSortKey} currentOrder={logSortOrder} onSort={handleLogSort} /></th>
@@ -152,6 +153,7 @@ export default function SubscriptionDetailPage({ params }: { params: Promise<{ i
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </Card>
       </div>
@@ -176,7 +178,7 @@ export default function SubscriptionDetailPage({ params }: { params: Promise<{ i
 }
 
 const fieldClass = "input-dark w-full px-3.5 py-2.5 text-sm rounded-xl";
-const labelClass = "text-xs font-semibold text-zinc-500 uppercase tracking-widest";
+const labelClass = "text-sm font-medium text-zinc-700";
 
 function AddLogForm({ defaultAmount, onSubmit, onCancel }: {
   defaultAmount: number;

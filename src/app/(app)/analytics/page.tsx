@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
   return (
     <>
       <Header title="分析" />
-      <div className="p-6 space-y-5 max-w-3xl">
+      <div className="p-4 md:p-6 space-y-5 max-w-3xl w-full">
 
         {/* コントロール */}
         <div className="flex flex-wrap gap-3">
