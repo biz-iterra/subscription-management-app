@@ -13,19 +13,9 @@ interface ModalProps {
   size?: "sm" | "md" | "lg";
 }
 
-export function Modal({
-  open,
-  onClose,
-  title,
-  children,
-  className,
-  size = "md",
-}: ModalProps) {
-  // ESCキーで閉じる
+export function Modal({ open, onClose, title, children, className, size = "md" }: ModalProps) {
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     if (open) document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
@@ -33,32 +23,24 @@ export function Modal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* オーバーレイ */}
-      <div
-        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      {/* モーダル本体 */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
       <div
         className={cn(
-          "relative bg-white rounded-2xl shadow-xl w-full",
-          {
-            "max-w-sm": size === "sm",
-            "max-w-lg": size === "md",
-            "max-w-2xl": size === "lg",
-          },
+          "relative bg-white border border-zinc-200 rounded-2xl w-full shadow-modal animate-slide-up",
+          { "max-w-sm": size === "sm", "max-w-lg": size === "md", "max-w-2xl": size === "lg" },
           className
         )}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-            <h2 className="text-base font-semibold text-ink">{title}</h2>
+          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-zinc-200">
+            <h2 className="text-sm font-bold text-zinc-900">{title}</h2>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-ink-lighter hover:text-ink hover:bg-gray-100 transition-colors"
+              aria-label="閉じる"
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors"
             >
-              <X size={18} />
+              <X size={16} aria-hidden="true" />
             </button>
           </div>
         )}

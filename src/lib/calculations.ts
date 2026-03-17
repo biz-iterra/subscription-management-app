@@ -4,6 +4,7 @@ import {
   addWeeks,
   addYears,
   differenceInDays,
+  format,
   isBefore,
   parseISO,
 } from "date-fns";
@@ -141,7 +142,7 @@ export function withCalc(
 
   return {
     ...subscription,
-    next_payment_date: nextDate.toISOString().split("T")[0],
+    next_payment_date: format(nextDate, "yyyy-MM-dd"),
     days_until_next_payment: daysUntil,
     total_paid_amount: totalPaid,
     monthly_amount: monthly,

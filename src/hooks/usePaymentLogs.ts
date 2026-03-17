@@ -2,12 +2,12 @@
 
 import { createClient } from "@/lib/supabase/client";
 import type { PaymentLog } from "@/types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function usePaymentLogs(subscriptionId: string) {
   const [logs, setLogs] = useState<PaymentLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const supabase = useRef(createClient()).current;
 
   const fetch = useCallback(async () => {
     const { data } = await supabase
@@ -22,7 +22,10 @@ export function usePaymentLogs(subscriptionId: string) {
   useEffect(() => { fetch(); }, [fetch]);
 
   const create = async (values: { payment_date: string; amount: number; note?: string }) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("ログインが必要です");
     const { error } = await supabase.from("payment_logs").insert({
+      user_id: user.id,
       subscription_id: subscriptionId,
       payment_date: values.payment_date,
       amount: values.amount,

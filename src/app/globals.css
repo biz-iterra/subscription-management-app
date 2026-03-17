@@ -3,7 +3,66 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-base text-ink antialiased;
+  :root {
+    color-scheme: light;
   }
+
+  body {
+    background-color: #F5F5F7;
+    color: #111827;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "palt", "tnum";
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #F5F5F7; }
+  ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+}
+
+@layer components {
+  /* カード */
+  .glass-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  }
+
+  /* フォームインプット */
+  .input-dark {
+    background: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    color: #111827;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .input-dark::placeholder { color: #9CA3AF; }
+  .input-dark:focus {
+    outline: none;
+    border-color: #6366F1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+  .input-dark option { background: #FFFFFF; color: #111827; }
+
+  /* 等幅数字 */
+  .tabnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* ステータスドット */
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  .status-dot-active { animation: pulse-dot 2s ease-in-out infinite; }
+}
+
+@layer utilities {
+  /* 後方互換テキストユーティリティ — ライトテーマ版 */
+  .text-glass        { color: #111827; }   /* ~19:1 on white ✓ */
+  .text-glass-muted  { color: #6B7280; }   /* ~5:1 on white ✓  */
+  .text-glass-subtle { color: #9CA3AF; }   /* 装飾・大文字ラベルのみ */
+  .border-glass      { border-color: #E5E7EB; }
 }

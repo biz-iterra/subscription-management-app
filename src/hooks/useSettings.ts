@@ -9,12 +9,12 @@ import type {
   ReminderSettings,
   ReminderSettingsFormValues,
 } from "@/types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function usePaymentMethods() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const supabase = useRef(createClient()).current;
 
   const fetch = useCallback(async () => {
     const { data } = await supabase
@@ -28,7 +28,9 @@ export function usePaymentMethods() {
   useEffect(() => { fetch(); }, [fetch]);
 
   const create = async (values: PaymentMethodFormValues) => {
-    const { error } = await supabase.from("payment_methods").insert({ name: values.name });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("ログインが必要です");
+    const { error } = await supabase.from("payment_methods").insert({ user_id: user.id, name: values.name });
     if (error) throw new Error(error.message);
     await fetch();
   };
@@ -51,7 +53,7 @@ export function usePaymentMethods() {
 export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const supabase = useRef(createClient()).current;
 
   const fetch = useCallback(async () => {
     const { data } = await supabase
@@ -65,7 +67,9 @@ export function useCategories() {
   useEffect(() => { fetch(); }, [fetch]);
 
   const create = async (values: CategoryFormValues) => {
-    const { error } = await supabase.from("categories").insert({ name: values.name, color: values.color });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("ログインが必要です");
+    const { error } = await supabase.from("categories").insert({ user_id: user.id, name: values.name, color: values.color });
     if (error) throw new Error(error.message);
     await fetch();
   };
@@ -88,7 +92,7 @@ export function useCategories() {
 export function useReminderSettings() {
   const [settings, setSettings] = useState<ReminderSettings | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const supabase = useRef(createClient()).current;
 
   const fetch = useCallback(async () => {
     const { data } = await supabase
